@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f7f0e8" />
+  <title>День рождения Ирины — 50 лет</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+
+  <main class="app-shell">
+    <section class="welcome-card glass-card" id="welcomeCard">
+      <div class="small-label">ЛИЧНОЕ ПРИГЛАШЕНИЕ</div>
+      <div class="monogram">И</div>
+      <h1>День рождения<br><span>Ирины</span></h1>
+      <p class="subtitle">Исполняется 50 лет</p>
+      <div class="divider"><span></span> ✦ <span></span></div>
+      <p class="intro">Мы будем очень рады провести этот день вместе с вами.</p>
+
+      <form id="codeForm" class="code-form" novalidate>
+        <label for="inviteCode">Код приглашения</label>
+        <div class="code-row">
+          <input id="inviteCode" type="text" autocomplete="off" inputmode="text" maxlength="24" placeholder="Например, irina1976" />
+          <button class="primary-btn" type="submit">Открыть</button>
+        </div>
+        <div id="codeError" class="field-error" aria-live="polite"></div>
+      </form>
+
+      <p class="triple-hint" id="birthdaySecret" role="button" tabindex="0" aria-label="Название приглашения">День рождения</p>
+    </section>
+
+    <section class="invite-card glass-card hidden" id="inviteCard" aria-live="polite">
+      <div class="invite-topline">
+        <div>
+          <div class="small-label">ПРИГЛАШЕНИЕ ДЛЯ</div>
+          <div class="guest-name" id="guestDisplayName">Гость</div>
+        </div>
+        <button class="icon-btn" id="changeInvite" type="button" aria-label="Сменить приглашение">↻</button>
+      </div>
+
+      <div class="hero-date">
+        <div class="date-number">03</div>
+        <div>
+          <div class="date-month">ОКТЯБРЯ</div>
+          <div class="date-year">2026</div>
+        </div>
+      </div>
+
+      <p class="main-copy"><strong>День рождения Ирины — 50 лет!</strong><br>Отмечаем <b>3 октября</b> в <b>СНТ «ОКТЯБРЬ»</b>,<br>улица Кубанская, 164.</p>
+
+      <div class="notice-card">
+        <div class="notice-icon">🧥</div>
+        <div>
+          <b>Будем на улице</b>
+          <p>Поэтому, пожалуйста, возьмите куртки и оденьтесь по погоде.</p>
+        </div>
+      </div>
+
+      <p class="closing">Очень ждём каждого — пусть этот день получится тёплым, весёлым и по-настоящему семейным ❤️</p>
+
+      <button class="primary-btn big" id="rsvpStart" type="button">Я приду</button>
+
+      <p class="hint">Нажмите «День рождения» три раза, чтобы открыть служебную статистику.</p>
+    </section>
+
+    <section class="form-card glass-card hidden" id="rsvpCard">
+      <div class="small-label">ОТВЕТ НА ПРИГЛАШЕНИЕ</div>
+      <h2>Кто будет с вами?</h2>
+      <p class="section-copy">Заполните только тех, кто едет с вами. Отдельно заполнять приглашение для этих людей не нужно.</p>
+
+      <div id="peopleList" class="people-list"></div>
+      <button class="secondary-btn add-person" id="addPerson" type="button">＋ Добавить человека</button>
+
+      <div class="family-note">Добавляйте всех, кто с вами едет, если они есть в списке.</div>
+
+      <div class="form-actions">
+        <button class="secondary-btn" id="rsvpBack" type="button">Назад</button>
+        <button class="primary-btn" id="rsvpSubmit" type="button">Отправить</button>
+      </div>
+      <div id="submitError" class="field-error center" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <div class="modal hidden" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel glass-card">
+      <div class="modal-icon">✓</div>
+      <h3 id="confirmTitle">Всё верно?</h3>
+      <p>Проверьте имена и фамилии перед отправкой приглашения.</p>
+      <div id="confirmSummary" class="confirm-summary"></div>
+      <div class="form-actions">
+        <button class="secondary-btn" id="confirmNo" type="button">Изменить</button>
+        <button class="primary-btn" id="confirmYes" type="button">Да, отправить</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="loadingModal" role="dialog" aria-modal="true" aria-labelledby="loadingTitle">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel envelope-panel glass-card">
+      <div class="envelope-wrap" id="envelopeWrap">
+        <div class="envelope">
+          <div class="envelope-flap"></div>
+          <div class="envelope-paper">Приглашение</div>
+        </div>
+      </div>
+      <h3 id="loadingTitle">Отправляем приглашение</h3>
+      <p id="loadingText">Конверт закрывается и отправляется…</p>
+      <div class="progress"><span id="progressBar"></span></div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="adminModal" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel glass-card admin-panel">
+      <div class="admin-head">
+        <div>
+          <div class="small-label">СЛУЖЕБНОЕ МЕНЮ</div>
+          <h3 id="adminTitle">Гости</h3>
+        </div>
+        <button class="icon-btn" id="adminClose" type="button">×</button>
+      </div>
+      <div class="stat-grid">
+        <div class="stat"><span>Подтвердили</span><strong id="statPeople">0</strong></div>
+        <div class="stat"><span>Приглашений</span><strong id="statInvites">0</strong></div>
+        <div class="stat"><span>Всего людей</span><strong id="statTotal">0</strong></div>
+      </div>
+      <div id="guestTable" class="guest-table"></div>
+      <p class="admin-footnote">Код для служебного меню: <b>1976</b>.</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
